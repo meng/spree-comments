@@ -17,7 +17,7 @@ class Comment < ActiveRecord::Base
   
   STATUSES = ['comment', 'issue', 'resolved']
   
-  def resolved!
+  def resolve!
     update_attribute(:status, 'resolved')
   end
   
