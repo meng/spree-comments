@@ -45,7 +45,8 @@
     <th>Code</th>
     <% end %>
     <th><%= t("comment") %></th>
-    <th><%= t("status") %></th>    
+    <th><%= t("status") %></th>
+    <th><%= t("resolved_at") %></th>    
   </tr>
   <% commentable.comments.reverse.each_with_index do |comment, index| %>
     <tr id="<%= dom_id(comment) %>">
@@ -62,6 +63,7 @@
         </div>
       </td>
       <td><%= comment.status %></td>
+      <td><%= comment.resolved_at.to_s(:date_time24) unless comment.resolved_at.blank? %></td>
      </tr>
   <% end %>
 </table>

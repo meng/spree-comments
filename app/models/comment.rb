@@ -13,6 +13,20 @@ class Comment < ActiveRecord::Base
   # NOTE: Comments belong to a user
   belongs_to :user
   
+  before_save :set_resolved_at_if_resolved
+  
   STATUSES = ['comment', 'issue', 'resolved']
+  
+  def resolved!
+    update_attribute(:status, 'resolved')
+  end
+  
+  private
+  
+  def set_resolved_at_if_resolved
+    if status == 'resolved' && resolved_at.blank?
+      self.resolved_at = Time.zone.now
+    end
+  end
 
 end
