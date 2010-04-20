@@ -21,7 +21,8 @@ class CommentsExtension < Spree::Extension
     Admin::OrdersController.class_eval do
       def comments
         load_object
-        @comment_types = CommentType.find(:all, :conditions => {:applies_to => "Order"} )
+        @comment_types    = CommentType.find(:all, :conditions => {:applies_to => "Order"} )
+        @comment_statuses = Comment::STATUSES
       end
     end
 
@@ -29,6 +30,7 @@ class CommentsExtension < Spree::Extension
       def comments
         load_object
         @comment_types = CommentType.find(:all, :conditions => {:applies_to => "Shipment"} )
+        @comment_statuses = Comment::STATUSES
       end
     end
 

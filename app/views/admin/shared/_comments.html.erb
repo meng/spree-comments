@@ -1,32 +1,5 @@
 <h1><%= "#{t("comments")} #{(t('for') + " " + comments_for unless (comments_for rescue nil).nil?)}"%></h1>
 
-<table class="index">
-  <tr>
-    <th style="width:140px;"><%= "#{t('spree.date')}/#{t('spree.time')}" %></th>
-    <% unless @comment_types.empty? %>
-      <th><%= t("type") %></th>
-    <% end %>
-    <th><%= t("comment") %></th>
-  </tr>
-  <% commentable.comments.reverse.each_with_index do |comment, index| %>
-    <tr id="<%= dom_id(comment) %>">
-      <td><%= comment.created_at.to_formatted_s(:long) %></td>
-      <% unless @comment_types.empty? %>
-        <td><%= comment.comment_type.name if comment.comment_type %></td>
-      <% end %>
-      <td>
-        <div id="order-comment-header-<%= index %>" class="order-comment-header">
-          <strong><%= comment.user.email%> said:</strong>
-        </div>
-        <div id="order-comment-body-<%= index %>" class="order-comment-body">
-          <%= comment.comment %>
-        </div>
-      </td>
-     </tr>
-  <% end %>
-</table>
-
-
 <div class="order-add-comment">
   <% form_for(:comment, :url => admin_comments_url) do |f| %>
     <%= hidden_field_tag 'comment[commentable_id]', commentable.id %>
@@ -45,6 +18,10 @@
           </tr>
         <% end %>
         <tr>
+          <td><%= f.label :comment_status, t("status") %><br /></td>
+          <td><%= f.select :status, @comment_statuses, {}, :class => 'title' %></td>
+        </tr>
+        <tr>
           <td style="width:140px;"><%= f.label :comment, t("comment") %></td>
           <td><%= f.text_area :comment,  {:style => 'height:150px;', :class => 'fullwidth'} %></td>
         </tr>
@@ -60,3 +37,31 @@
     </p>
   <% end %>
 </div>
+
+<table class="index">
+  <tr>
+    <th style="width:140px;"><%= "#{t('spree.date')}/#{t('spree.time')}" %></th>
+    <% unless @comment_types.empty? %>
+    <th>Code</th>
+    <% end %>
+    <th><%= t("comment") %></th>
+    <th><%= t("status") %></th>    
+  </tr>
+  <% commentable.comments.reverse.each_with_index do |comment, index| %>
+    <tr id="<%= dom_id(comment) %>">
+      <td><%= comment.created_at.to_formatted_s(:long) %></td>
+      <% unless @comment_types.empty? %>
+        <td><%= comment.comment_type.name if comment.comment_type %></td>
+      <% end %>
+      <td>
+        <div id="order-comment-header-<%= index %>" class="order-comment-header">
+          <strong><%= comment.user.email%> said:</strong>
+        </div>
+        <div id="order-comment-body-<%= index %>" class="order-comment-body">
+          <%= comment.comment %>
+        </div>
+      </td>
+      <td><%= comment.status %></td>
+     </tr>
+  <% end %>
+</table>
